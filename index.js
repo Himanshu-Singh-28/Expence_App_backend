@@ -5,6 +5,9 @@ import { config } from "dotenv"
 import { userRouter } from "./Routs/userRoutes.js";
 import { expenceRoutes } from "./Routs/expenceRoutes.js";
 import cors from "cors";
+import NodeCache from "node-cache";
+
+export const nodecache=new NodeCache();
 
 config({path: "./connect/config.env"});
 ConnectDb();
@@ -17,6 +20,7 @@ app.use(cors({
     methods: ["GET","POST","PUT","DELETE"],
     credentials: true,
 }));
+
 app.use("/api/v2/user",userRouter);
 app.use("/api/v2/expence",expenceRoutes);
 

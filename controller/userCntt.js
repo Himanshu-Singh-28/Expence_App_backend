@@ -1,11 +1,18 @@
 import { User } from "../Models/User.js";
 import { sendcookie } from "../Utils/sendcookies.js";
 import bcrypt from "bcrypt";
+import { nodecache } from "../index.js";
 
 export const userLogin=async(req,res)=>{
     const {email,password}=req.body;
+    let user;
+    if(nodecache.has("user")){
+        user=JSON.parse(nodecache.get("user"));
+    }else{
+        user=await User.findOne({email:email});
+        nodecache.set("user", JSON.stringify(user));
+    }
 
-    const user=await User.findOne({email:email});
 
     if(!user){
         return res.json({
